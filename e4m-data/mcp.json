@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "name": "e4m-data",
+  "display_name": "外部データベース連携ツール",
+  "description": "Materials Project（結晶構造・物性）と Starrydata（熱電材料）を検索できる。",
+  "version": "0.1.0",
+  "author": "E4M",
+  "port": 8002,
+  "transport": "sse",
+  "health_check": "/sse",
+  "dify": {
+    "auto_register": true,
+    "label": "E4M データベース",
+    "icon": "🔬",
+    "icon_background": "#F3E5F5"
+  },
+  "env": {
+    "required": [],
+    "optional": [
+      "MP_API_KEY"
+    ]
+  },
+  "groups": [
+    "default"
+  ],
+  "static_ip": "172.20.0.12"
+}

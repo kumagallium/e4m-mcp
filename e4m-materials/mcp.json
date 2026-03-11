@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "name": "e4m-materials",
+  "display_name": "材料科学ツール",
+  "description": "組成変換（原子%・重量%・体積%）、体積・質量計算、元素物性データを提供する。",
+  "version": "0.1.0",
+  "author": "E4M",
+  "port": 8001,
+  "transport": "sse",
+  "health_check": "/sse",
+  "dify": {
+    "auto_register": true,
+    "label": "E4M 材料科学",
+    "icon": "⚗️",
+    "icon_background": "#E8F5E9"
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "groups": [
+    "default"
+  ],
+  "static_ip": "172.20.0.11"
+}

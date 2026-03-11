@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "name": "e4m-utils",
+  "display_name": "汎用ユーティリティツール",
+  "description": "物理単位変換と DOI 文献フォーマット変換を提供する。",
+  "version": "0.1.0",
+  "author": "E4M",
+  "port": 8003,
+  "transport": "sse",
+  "health_check": "/sse",
+  "dify": {
+    "auto_register": true,
+    "label": "E4M ユーティリティ",
+    "icon": "🔧",
+    "icon_background": "#E5F0FF"
+  },
+  "env": {
+    "required": [],
+    "optional": []
+  },
+  "groups": [
+    "default"
+  ],
+  "static_ip": "172.20.0.13"
+}

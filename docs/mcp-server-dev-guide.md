@@ -193,15 +193,20 @@ def search_data(query: Annotated[str, Field(description="検索クエリ")]) -> 
 ```dockerfile
 FROM python:3.12-slim
 WORKDIR /app
-COPY pyproject.toml .
+COPY my-server/pyproject.toml .
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir .
-COPY src/ src/
+COPY my-server/src/ src/
 RUN pip install --no-cache-dir -e .
 ENV TRANSPORT=sse
 EXPOSE 8000
-CMD ["my-server", "--transport", "sse", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python", "-m", "my_server", "--transport", "sse", "--host", "0.0.0.0", "--port", "8000"]
 ```
+
+> **ビルドはリポジトリルートから実行します:**
+> ```bash
+> docker build -f my-server/Dockerfile -t e4m/my-server .
+> ```
 
 > **gcc が必要なライブラリ（pymatgen など）を使う場合:**
 > ```dockerfile

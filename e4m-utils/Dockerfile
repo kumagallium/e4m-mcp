@@ -1,9 +1,9 @@
 FROM python:3.12-slim
 WORKDIR /app
-COPY pyproject.toml .
+COPY e4m-utils/pyproject.toml .
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir .
-COPY src/ src/
+COPY e4m-utils/src/ src/
 RUN pip install --no-cache-dir -e .
 ENV TRANSPORT=sse
 EXPOSE 8000

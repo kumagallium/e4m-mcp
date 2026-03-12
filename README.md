@@ -32,6 +32,14 @@ uv sync
 uv run python -m e4m_materials
 ```
 
+### Docker ビルド（リポジトリルートから）
+
+```bash
+docker build -f e4m-utils/Dockerfile     -t e4m/utils     .
+docker build -f e4m-materials/Dockerfile -t e4m/materials .
+docker build -f e4m-data/Dockerfile      -t e4m/data      .
+```
+
 ### Claude Code への組み込み
 
 `~/.claude/settings.json` に追加：

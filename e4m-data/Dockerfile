@@ -3,10 +3,10 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc g++ \
     && rm -rf /var/lib/apt/lists/*
-COPY pyproject.toml .
+COPY e4m-data/pyproject.toml .
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir .
-COPY src/ src/
+COPY e4m-data/src/ src/
 RUN pip install --no-cache-dir -e .
 ENV TRANSPORT=sse
 EXPOSE 8000

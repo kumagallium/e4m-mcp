@@ -1,7 +1,8 @@
 """E4M ユーティリティ MCP サーバー（単位変換 / DOI 文献フォーマット）"""
 from __future__ import annotations
 import os
-from typing import Annotated
+import re
+from typing import Annotated, Literal
 import pint
 import requests
 from mcp.server.fastmcp import FastMCP
@@ -70,14 +71,32 @@ def e4m_list_units() -> dict:
 
 # ── 文献フォーマット ──
 
+_DOI_RE = re.compile(r"^10\.\d{4,}/\S+$")
+_LANG_RE = re.compile(r"^[a-z]{2}(-[A-Z]{2})?$")
+
+StyleType = Literal[
+    "apa", "vancouver", "harvard-cite-them-right",
+    "nature", "science", "cell",
+    "ieee", "chicago-author-date",
+    "american-chemical-society", "royal-society-of-chemistry",
+    "american-physics-society",
+    "journal-of-applied-physics",
+    "acta-materialia",
+    "journal-of-materials-science",
+]
+
 @mcp.tool()
 def e4m_doi2format(
     doi: Annotated[str, Field(description="DOI (例: '10.1038/nature12373')")],
-    style: Annotated[str, Field(description="引用スタイル (例: 'apa', 'nature', 'ieee')")] = "apa",
+    style: Annotated[StyleType, Field(description="引用スタイル (例: 'apa', 'nature', 'ieee')")] = "apa",
     lang: Annotated[str, Field(description="言語コード (例: 'en-US', 'ja-JP')")] = "en-US",
 ) -> str:
     """DOI を指定した引用スタイルでフォーマットされた参考文献に変換する。"""
     doi_clean = doi.strip().removeprefix("https://doi.org/").removeprefix("http://doi.org/")
+    if not _DOI_RE.match(doi_clean):
+        raise ValueError(f"DOI の形式が不正です: {doi_clean!r}")
+    if not _LANG_RE.match(lang):
+        raise ValueError(f"言語コードの形式が不正です: {lang!r}")
     url = f"{CROSSCITE_URL}?doi={doi_clean}&style={style}&lang={lang}"
     try:
         r = requests.get(url, headers={"Accept": "text/x-bibliography"}, timeout=15)
@@ -100,7 +119,7 @@ def main() -> None:
     import argparse
     parser = argparse.ArgumentParser(description="E4M ユーティリティ MCP サーバー")
     parser.add_argument("--transport", choices=["stdio", "sse"], default=os.environ.get("TRANSPORT", "stdio"))
-    parser.add_argument("--host", default="0.0.0.0")
+    parser.add_argument("--host", default=os.environ.get("MCP_HOST", "127.0.0.1"))
     parser.add_argument("--port", type=int, default=8003)
     args = parser.parse_args()
     if args.transport == "sse":

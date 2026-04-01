@@ -173,7 +173,7 @@ def main() -> None:
     import argparse
     parser = argparse.ArgumentParser(description="E4M 外部データ連携 MCP サーバー")
     parser.add_argument("--transport", choices=["stdio", "sse"], default=os.environ.get("TRANSPORT", "stdio"))
-    parser.add_argument("--host", default="0.0.0.0")
+    parser.add_argument("--host", default=os.environ.get("MCP_HOST", "127.0.0.1"))
     parser.add_argument("--port", type=int, default=8002)
     args = parser.parse_args()
     if args.transport == "sse":
